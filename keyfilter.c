@@ -1,4 +1,4 @@
-// gcc -std=c11 -Wall -Wextra -Werror test.c -o test
+// gcc -std=c11 -Wall -Wextra -Werror keyfilter.c -o keyfilter
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,7 +7,7 @@
 
 
 int main(int argc, char *argv[]) {
-    const char *PREFIX = (argc >= 2) ? argv[1] : ""; // Check if argc >= 2
+    const char *PREFIX = (argc >= 2) ? argv[1] : "";
 
     char line[100]; // A buffer to store each line
     char addresses[42][100];
@@ -36,10 +36,24 @@ int main(int argc, char *argv[]) {
             }
         }
 
+        // Convert the prefix to uppercase
+        char prefixUpper[100];
+        for (size_t k = 0; k < strlen(PREFIX); k++) {
+            prefixUpper[k] = toupper(PREFIX[k]);
+        }
+        prefixUpper[strlen(PREFIX )] = '\0';
+
         int countPrefix = 0;
         for (int j = 0; j < i; j++) {
+            // Convert the adresses to uppercase
+            char addressUpper[100];
 
-            if (strncmp(PREFIX,addresses[j], strlen(PREFIX)) == 0) 
+            for (size_t k = 0; k < strlen(addresses[j]); k++) {
+                addressUpper[k] = toupper(addresses[j][k]);
+            }
+            addressUpper[strlen(addresses[j])] = '\0';
+
+            if (strncmp(prefixUpper,addressUpper, strlen(PREFIX)) == 0) 
                 countPrefix++;
         }
 
@@ -48,8 +62,14 @@ int main(int argc, char *argv[]) {
 
         if (countPrefix == 1) {
             for (int j = 0; j < i; j++) {
+                char addressUpper[100];
 
-                if (strncmp(PREFIX,addresses[j], strlen(PREFIX)) == 0)
+                for (size_t k = 0; k < strlen(addresses[j]); k++) {
+                    addressUpper[k] = toupper(addresses[j][k]);
+                }
+                addressUpper[strlen(addresses[j])] = '\0';
+
+                if (strncmp(prefixUpper, addressUpper, strlen(PREFIX)) == 0)
                     printf("Found: %s\n", addresses[j]);
             }
         }
@@ -58,8 +78,14 @@ int main(int argc, char *argv[]) {
             printf("Enable: ");
 
             for (int j = 0; j < i; j++) {
+                char addressUpper[100];
+
+                for (size_t k = 0; k < strlen(addresses[j]); k++) {
+                    addressUpper[k] = toupper(addresses[j][k]);
+                }
+                addressUpper[strlen(addresses[j])] = '\0';
                 
-                if (strncmp(PREFIX,addresses[j], strlen(PREFIX)) == 0) 
+                if (strncmp(prefixUpper, addressUpper, strlen(PREFIX)) == 0)
                     printf("%c", addresses[j][strlen(PREFIX)]);
             }
 
