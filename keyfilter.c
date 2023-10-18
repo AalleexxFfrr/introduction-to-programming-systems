@@ -5,9 +5,16 @@
 #include <string.h>
 #include <ctype.h>
 
+// Function to convert a string to uppercase
+void toUpper(char *str) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        str[i] = toupper(str[i]);
+    }
+}
+
 
 int main(int argc, char *argv[]) {
-    const char *PREFIX = (argc >= 2) ? argv[1] : "";
+    const char *prefix = (argc >= 2) ? argv[1] : ""; // Check if argc >= 2
 
     char line[100]; // A buffer to store each line
     char addresses[42][100];
@@ -17,12 +24,11 @@ int main(int argc, char *argv[]) {
     // So user can know where to start to search
     if (argc < 2) {
         printf("Enable: ");
-
         while (fgets(line, sizeof(line), stdin) != NULL) {
-            if (strlen(line) > 0)
+            if (strlen(line) > 0) {
                 printf("%c", line[0]);
+            }
         }
-
         printf("\n");
     }
 
@@ -38,22 +44,17 @@ int main(int argc, char *argv[]) {
 
         // Convert the prefix to uppercase
         char prefixUpper[100];
-        for (size_t k = 0; k < strlen(PREFIX); k++) {
-            prefixUpper[k] = toupper(PREFIX[k]);
-        }
-        prefixUpper[strlen(PREFIX )] = '\0';
+        strcpy(prefixUpper, prefix);
+        toUpper(prefixUpper);
 
         int countPrefix = 0;
         for (int j = 0; j < i; j++) {
             // Convert the adresses to uppercase
             char addressUpper[100];
+            strcpy(addressUpper, addresses[j]);
+            toUpper(addressUpper);
 
-            for (size_t k = 0; k < strlen(addresses[j]); k++) {
-                addressUpper[k] = toupper(addresses[j][k]);
-            }
-            addressUpper[strlen(addresses[j])] = '\0';
-
-            if (strncmp(prefixUpper,addressUpper, strlen(PREFIX)) == 0) 
+            if (strncmp(prefixUpper,addressUpper, strlen(prefixUpper)) == 0) 
                 countPrefix++;
         }
 
@@ -63,13 +64,11 @@ int main(int argc, char *argv[]) {
         if (countPrefix == 1) {
             for (int j = 0; j < i; j++) {
                 char addressUpper[100];
+                strcpy(addressUpper, addresses[j]);
+                toUpper(addressUpper);
+                
 
-                for (size_t k = 0; k < strlen(addresses[j]); k++) {
-                    addressUpper[k] = toupper(addresses[j][k]);
-                }
-                addressUpper[strlen(addresses[j])] = '\0';
-
-                if (strncmp(prefixUpper, addressUpper, strlen(PREFIX)) == 0)
+                if (strncmp(prefixUpper, addressUpper, strlen(prefixUpper)) == 0)
                     printf("Found: %s\n", addresses[j]);
             }
         }
@@ -79,14 +78,11 @@ int main(int argc, char *argv[]) {
 
             for (int j = 0; j < i; j++) {
                 char addressUpper[100];
+                strcpy(addressUpper, addresses[j]);
+                toUpper(addressUpper);
 
-                for (size_t k = 0; k < strlen(addresses[j]); k++) {
-                    addressUpper[k] = toupper(addresses[j][k]);
-                }
-                addressUpper[strlen(addresses[j])] = '\0';
-                
-                if (strncmp(prefixUpper, addressUpper, strlen(PREFIX)) == 0)
-                    printf("%c", addresses[j][strlen(PREFIX)]);
+                if (strncmp(prefixUpper, addressUpper, strlen(prefixUpper)) == 0)
+                    printf("%c", addresses[j][strlen(prefix)]);
             }
 
             printf("\n");
