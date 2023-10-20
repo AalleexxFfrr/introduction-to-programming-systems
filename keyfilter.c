@@ -40,63 +40,56 @@ void alphabetizeString(char *str) {
 
 int main(int argc, char *argv[]) {
     const char *PREFIX = (argc >= 2) ? argv[1] : "";
+    const int PREFIXLENGTH = strlen(PREFIX);
 
     char line[100]; // A buffer to store each line
-    char addresses[42][100];
 
     // User's input includes only executable file and database
     // User doesn't provide address, so we display all start letters of adresses
     // So user can know where to start to search
     if (argc < 2) {
-        char firstLetters[100];
+        char allowedLetters[100];
         while (fgets(line, sizeof(line), stdin) != NULL) {
-            if (strlen(line) > 0) {
-                addCharToStringIfNotPresent(firstLetters, line[0]);
+            int length = strlen(line);
+            if (length > 0) {
+                addCharToStringIfNotPresent(allowedLetters, line[0]);
             }
         }
-        alphabetizeString(firstLetters);
-        printf("Enable: %s\n", firstLetters);
+        alphabetizeString(allowedLetters);
+        printf("Enable: %s\n", allowedLetters);
     }
 
     // User's input includes address or part of it
     if (argc >= 2) {
-        int i = 0;
-        while (i < 42 && fgets(line, sizeof(line), stdin) != NULL) {
-            if (strlen(line) > 0) {
-                strcpy(addresses[i], line); // Copy the line to adresses array
-                i++;
+        char allowedLetters[100];
+        char foundedCity[100];
+        int countPrefix = 0;
+        while (fgets(line, sizeof(line), stdin) != NULL) {
+
+            int length = strlen(line);
+            if (length > 0) {
+                if (strncasecmp(PREFIX,line, PREFIXLENGTH) == 0) {
+                    strcpy(foundedCity, line);
+                    addCharToStringIfNotPresent(allowedLetters, toupper(line[PREFIXLENGTH]));
+                    countPrefix++;
+                }       
             }
         }
 
-        int countPrefix = 0;
-        for (int j = 0; j < i; j++) {
-
-            if (strncasecmp(PREFIX,addresses[j], strlen(PREFIX)) == 0)
-                countPrefix++;
-        }
-
+        alphabetizeString(allowedLetters);
         if (countPrefix == 0)
             printf("Not found\n");
 
         if (countPrefix == 1) {
-            for (int j = 0; j < i; j++) {
-
-                if (strncasecmp(PREFIX,addresses[j], strlen(PREFIX)) == 0) 
-                    printf("Found: %s\n", addresses[j]);
+            printf("Found: ");
+            for (int i = 0; foundedCity[i] != '\0'; i++) {
+                printf("%c", toupper(foundedCity[i]));
             }
+            printf("\n");   
         }
 
-        if (countPrefix > 1) {
-            printf("Enable: ");
-
-            for (int j = 0; j < i; j++) {
-               
-                if (strncasecmp(PREFIX,addresses[j], strlen(PREFIX)) == 0) 
-                    printf("%c", addresses[j][strlen(PREFIX)]);
-            }
-
-            printf("\n");
-        }
+        if (countPrefix >= 2)
+            printf("Enable: %s\n", allowedLetters);
     }
        
     return 0;
