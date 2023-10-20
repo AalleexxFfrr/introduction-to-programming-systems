@@ -3,18 +3,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <ctype.h>
-
-// Function to convert a string to uppercase
-void toUpper(char *str) {
-    for (int i = 0; str[i] != '\0'; i++) {
-        str[i] = toupper(str[i]);
-    }
-}
 
 
 int main(int argc, char *argv[]) {
-    const char *prefix = (argc >= 2) ? argv[1] : ""; // Check if argc >= 2
+    const char *PREFIX = (argc >= 2) ? argv[1] : "";
 
     char line[100]; // A buffer to store each line
     char addresses[42][100];
@@ -42,19 +36,10 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        // Convert the prefix to uppercase
-        char prefixUpper[100];
-        strcpy(prefixUpper, prefix);
-        toUpper(prefixUpper);
-
         int countPrefix = 0;
         for (int j = 0; j < i; j++) {
-            // Convert the adresses to uppercase
-            char addressUpper[100];
-            strcpy(addressUpper, addresses[j]);
-            toUpper(addressUpper);
 
-            if (strncmp(prefixUpper,addressUpper, strlen(prefixUpper)) == 0) 
+            if (strncasecmp(PREFIX,addresses[j], strlen(PREFIX)) == 0)
                 countPrefix++;
         }
 
@@ -63,12 +48,8 @@ int main(int argc, char *argv[]) {
 
         if (countPrefix == 1) {
             for (int j = 0; j < i; j++) {
-                char addressUpper[100];
-                strcpy(addressUpper, addresses[j]);
-                toUpper(addressUpper);
-                
 
-                if (strncmp(prefixUpper, addressUpper, strlen(prefixUpper)) == 0)
+                if (strncasecmp(PREFIX,addresses[j], strlen(PREFIX)) == 0) 
                     printf("Found: %s\n", addresses[j]);
             }
         }
@@ -77,12 +58,9 @@ int main(int argc, char *argv[]) {
             printf("Enable: ");
 
             for (int j = 0; j < i; j++) {
-                char addressUpper[100];
-                strcpy(addressUpper, addresses[j]);
-                toUpper(addressUpper);
-
-                if (strncmp(prefixUpper, addressUpper, strlen(prefixUpper)) == 0)
-                    printf("%c", addresses[j][strlen(prefix)]);
+               
+                if (strncasecmp(PREFIX,addresses[j], strlen(PREFIX)) == 0) 
+                    printf("%c", addresses[j][strlen(PREFIX)]);
             }
 
             printf("\n");
