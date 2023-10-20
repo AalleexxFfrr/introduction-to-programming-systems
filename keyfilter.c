@@ -7,6 +7,37 @@
 #include <ctype.h>
 
 
+void addCharToStringIfNotPresent(char *str, char newChar) {
+    int isCharInString = 0;
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] == newChar) {
+            isCharInString = 1;
+            break;
+        }
+    }
+
+    if (!isCharInString) {
+        int length = strlen(str);
+        str[length] = newChar;
+        str[length+1] = '\0';
+    }
+}
+
+void alphabetizeString(char *str) {
+    int length = strlen(str);
+
+    for (int i = 0; i < length - 1; i++) {
+        for (int j = 0; j < length - i - 1; j++) {
+            if (str[j] > str[j + 1]) {
+                char temp = str[j];
+                str[j] = str[j + 1];
+                str[j + 1] = temp;
+            }
+        }
+    }
+}
+
+
 int main(int argc, char *argv[]) {
     const char *PREFIX = (argc >= 2) ? argv[1] : "";
 
@@ -17,13 +48,14 @@ int main(int argc, char *argv[]) {
     // User doesn't provide address, so we display all start letters of adresses
     // So user can know where to start to search
     if (argc < 2) {
-        printf("Enable: ");
+        char firstLetters[100];
         while (fgets(line, sizeof(line), stdin) != NULL) {
             if (strlen(line) > 0) {
-                printf("%c", line[0]);
+                addCharToStringIfNotPresent(firstLetters, line[0]);
             }
         }
-        printf("\n");
+        alphabetizeString(firstLetters);
+        printf("Enable: %s\n", firstLetters);
     }
 
     // User's input includes address or part of it
