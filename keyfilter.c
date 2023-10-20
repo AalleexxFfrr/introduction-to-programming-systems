@@ -1,7 +1,7 @@
 /*
- * keyfilter.c
  * Theme: Text Processing
- * Author: Aleksandr Dmitriev, October 2023
+ * @file keyfilter.c
+ * @author: Aleksandr Dmitriev(240259/xdmitr01), October 2023
  */
 
 #include <stdio.h>
