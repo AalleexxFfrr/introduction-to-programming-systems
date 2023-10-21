@@ -1,4 +1,4 @@
-/*
+/**
  * Theme: Text Processing
  * @file keyfilter.c
  * @author: Aleksandr Dmitriev(240259/xdmitr01), October 2023
@@ -49,7 +49,7 @@ void alphabetizeString(char *str) {
     }
 }
 
-/*
+/**
  * Main function
  * @param argc int
  * @param *argv[] char
