@@ -1,7 +1,8 @@
 /**
- * Theme: Text Processing
  * @file keyfilter.c
- * @author: Aleksandr Dmitriev(240259/xdmitr01), October 2023
+ * @brief Theme: Text Processing
+ * @author Aleksandr Dmitriev (240259/xdmitr01)
+ * @date October 2023
  */
 
 #include <stdio.h>
@@ -10,11 +11,13 @@
 #include <strings.h>
 #include <ctype.h>
 
-/*
-Help function to create string to store allowed letters on keyboard
-And also it checks if string doesn't already contain letter
-To avoid letters repetetivness 
-*/
+/**
+ * @brief Help function to create a string to store allowed letters on the keyboard.
+ *        It also checks if the string doesn't already contain the letter to avoid letter repetitiveness.
+ *
+ * @param str The destination string.
+ * @param newChar The character to be added to the string if not already present.
+ */
 void addCharToStringIfNotPresent(char *str, char newChar) {
     int isCharInString = 0;
     for (int i = 0; str[i] != '\0'; i++) {
@@ -31,10 +34,13 @@ void addCharToStringIfNotPresent(char *str, char newChar) {
     }
 }
 
-/*
-I can't use sort functions, so I wrote help function
-To sort output in alphabetical order, using simple bubble sort
-*/
+/**
+ * @brief Sort a string in alphabetical order using the bubble sort algorithm.
+ * 
+ * This function is used to sort the characters within the provided string.
+ *
+ * @param str The string to be alphabetized.
+ */
 void alphabetizeString(char *str) {
     int length = strlen(str);
 
@@ -50,9 +56,11 @@ void alphabetizeString(char *str) {
 }
 
 /**
- * Main function
- * @param argc int
- * @param *argv[] char
+ * @brief The main function.
+ *
+ * @param argc The number of command-line arguments.
+ * @param argv An array of strings containing the command-line arguments.
+ * @return An integer representing the exit status.
  */
 int main(int argc, char *argv[]) {
     /* If user's input includes only executable file and database, we take address as empty string
@@ -66,7 +74,7 @@ int main(int argc, char *argv[]) {
 
     char allowedLetters[100];
     char foundedCity[100]; // A buffer to store copy of line, if countPrefix == 1 (only one address in database)
-    int countPrefix = 0;
+    int countPrefix = 0; // Count mathes between a PREFIX and a line
 
     // Stream processing
     while (fgets(line, sizeof(line), stdin) != NULL) {
