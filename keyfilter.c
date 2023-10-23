@@ -11,6 +11,13 @@
 #include <strings.h>
 #include <ctype.h>
 
+#define MAX_ADDRESS_LENGTH 100
+#define INVALID_ARGUMENTS_MESSAGE "Invalid number of arguments. Please provide one, or don't provide any."
+#define INPUT_ERROR_MESSAGE "Error reading input data." 
+#define NOT_FOUND_MESSAGE "Not found"
+#define FOUND_MESSAGE "Found: "
+#define ENABLE_MESSAGE "Enable: "
+
 /**
  * @brief Help function to create a string to store allowed letters on the keyboard.
  *        It also checks if the string doesn't already contain the letter to avoid letter repetitiveness.
@@ -63,6 +70,11 @@ void alphabetizeString(char *str) {
  * @return An integer representing the exit status.
  */
 int main(int argc, char *argv[]) {
+    if (argc > 2) {
+        fprintf(stderr, "%s\n", INVALID_ARGUMENTS_MESSAGE);
+        return 1;
+    }
+
     /* If user's input includes only executable file and database, we take address as empty string
        User doesn't provide address, so we display all possible start letters of adresses
        So user can know where to start to search 
@@ -70,20 +82,24 @@ int main(int argc, char *argv[]) {
     const char *PREFIX = (argc >= 2) ? argv[1] : "";
     const int PREFIXLENGTH = strlen(PREFIX);
 
-    char line[100]; // A buffer to store each line
-
-    char allowedLetters[100];
-    char foundedCity[100]; // A buffer to store copy of line, if countPrefix == 1 (only one address in database)
+    char line[MAX_ADDRESS_LENGTH]; // A buffer to store each line
+    char allowedLetters[MAX_ADDRESS_LENGTH];
+    char foundedCity[MAX_ADDRESS_LENGTH]; // A buffer to store copy of line, if countPrefix == 1 (only one address in database)
     int countPrefix = 0; // Count mathes between a PREFIX and a line
 
     // Stream processing
     while (fgets(line, sizeof(line), stdin) != NULL) {
+        if (ferror(stdin)) {
+            fprintf(stderr, "%s\n", INPUT_ERROR_MESSAGE);
+            return 1;
+        }
 
         int length = strlen(line);
-
         if (length > 0) {
             if (strncasecmp(PREFIX,line, PREFIXLENGTH) == 0) {
-                strcpy(foundedCity, line);
+                if (countPrefix < 2) {
+                    strcpy(foundedCity, line);
+                }
                 addCharToStringIfNotPresent(allowedLetters, toupper(line[PREFIXLENGTH]));
                 countPrefix++;
             }       
@@ -92,20 +108,17 @@ int main(int argc, char *argv[]) {
 
     alphabetizeString(allowedLetters);
 
-    if (countPrefix == 0)
-        printf("Not found\n");
-
-    if (countPrefix == 1) {
-        printf("Found: ");
+    if (countPrefix == 0) {
+        printf("%s\n", NOT_FOUND_MESSAGE);
+    } else if (countPrefix == 1) {
+        printf("%s", FOUND_MESSAGE);
         for (int i = 0; foundedCity[i] != '\0'; i++) {
             printf("%c", toupper(foundedCity[i]));
-            }
-        printf("\n");   
+        }
+        printf("\n");
+    } else {
+        printf("%s%s\n", ENABLE_MESSAGE, allowedLetters);
     }
 
-    if (countPrefix >= 2)
-        printf("Enable: %s\n", allowedLetters);
-
-     return 0;
+    return 0;
 }
-       
