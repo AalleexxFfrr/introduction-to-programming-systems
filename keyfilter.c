@@ -12,11 +12,6 @@
 #include <ctype.h>
 
 #define MAX_ADDRESS_LENGTH 100
-#define INVALID_ARGUMENTS_MESSAGE "Invalid number of arguments. Please provide one, or don't provide any."
-#define INPUT_ERROR_MESSAGE "Error reading input data." 
-#define NOT_FOUND_MESSAGE "Not found"
-#define FOUND_MESSAGE "Found: "
-#define ENABLE_MESSAGE "Enable: "
 
 /**
  * @brief Help function to create a string to store allowed letters on the keyboard.
@@ -71,7 +66,8 @@ void alphabetizeString(char *str) {
  */
 int main(int argc, char *argv[]) {
     if (argc > 2) {
-        fprintf(stderr, "%s\n", INVALID_ARGUMENTS_MESSAGE);
+        fprintf(stderr, "Invalid number of arguments. \
+        Please provide one, or don't provide any.\n");
         return 1;
     }
 
@@ -90,7 +86,7 @@ int main(int argc, char *argv[]) {
     // Stream processing
     while (fgets(line, sizeof(line), stdin) != NULL) {
         if (ferror(stdin)) {
-            fprintf(stderr, "%s\n", INPUT_ERROR_MESSAGE);
+            fprintf(stderr, "Error reading input data.\n");
             return 1;
         }
 
@@ -109,15 +105,14 @@ int main(int argc, char *argv[]) {
     alphabetizeString(allowedLetters);
 
     if (countPrefix == 0) {
-        printf("%s\n", NOT_FOUND_MESSAGE);
+        printf("Not found\n");
     } else if (countPrefix == 1) {
-        printf("%s", FOUND_MESSAGE);
+        printf("Found: ");
         for (int i = 0; foundedCity[i] != '\0'; i++) {
             printf("%c", toupper(foundedCity[i]));
         }
-        printf("\n");
     } else {
-        printf("%s%s\n", ENABLE_MESSAGE, allowedLetters);
+        printf("Enable: %s\n", allowedLetters);
     }
 
     return 0;
