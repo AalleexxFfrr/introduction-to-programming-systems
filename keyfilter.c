@@ -66,8 +66,7 @@ void alphabetizeString(char *str) {
  */
 int main(int argc, char *argv[]) {
     if (argc > 2) {
-        fprintf(stderr, "Invalid number of arguments. \
-        Please provide one, or don't provide any.\n");
+        fprintf(stderr, "Invalid number of arguments. Please provide one, or don't provide any.\n");
         return 1;
     }
 
@@ -75,9 +74,8 @@ int main(int argc, char *argv[]) {
        User doesn't provide address, so we display all possible start letters of adresses
        So user can know where to start to search 
     */
-    const char *PREFIX = (argc >= 2) ? argv[1] : "";
-    const int PREFIXLENGTH = strlen(PREFIX);
-
+    char *PREFIX = (argc >= 2) ? argv[1] : "";
+    int PREFIXLENGTH = strlen(PREFIX);
     char line[MAX_ADDRESS_LENGTH]; // A buffer to store each line
     char allowedLetters[MAX_ADDRESS_LENGTH];
     char foundedCity[MAX_ADDRESS_LENGTH]; // A buffer to store copy of line, if countPrefix == 1 (only one address in database)
