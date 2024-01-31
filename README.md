@@ -1,4 +1,4 @@
-# Project 1 - Text Processing
+# Project - Text Processing
 
 ## Motivation
 
